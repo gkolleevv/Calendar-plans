@@ -1,0 +1,14 @@
+<div class="todo">
+  <mat-card>
+    <div class="wrapper">
+      <span class="time">From {{$any(todo)?.startHour}}:{{$any(todo)?.startMinutes}} TO {{$any(todo)?.endHour}}:{{$any(todo)?.endMinutes}} </span>
+      <span class="plan">{{$any(todo)?.plan}}</span>
+      <div>
+        <mat-icon class="material-symbols-outlined btn btn--green"
+                  (click)="editElement($any(todo))">edit</mat-icon>
+        <mat-icon class="material-symbols-outlined btn btn--red"
+                  (click)="removeElement($any(todo)?.id)">delete</mat-icon>
+      </div>
+    </div>
+  </mat-card>
+</div>

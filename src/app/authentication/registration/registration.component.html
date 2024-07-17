@@ -1,0 +1,90 @@
+   <main class="container">
+     <fieldset >
+      <form [formGroup]="registrationForm">
+        <legend>
+          <h2>Create Account</h2>
+        </legend>
+
+        <section >
+          <label for="firstName">First Name</label>
+          <input
+            type="text"
+            id="firstName"
+            formControlName="firstName"
+            class="form-control">
+          <span *ngIf="!$any(registrationForm).get('firstName').valid && $any(registrationForm).get('firstName').touched" class="help-block">
+           <small *ngIf="$any(registrationForm).get('firstName').errors.required" class="text-danger">First name is required!</small>
+            <small *ngIf="$any(registrationForm).get('firstName').errors.pattern" class="text-danger">Please provide a valid first name!</small>
+          </span>
+        </section>
+
+        <section >
+          <label for="lastName">Last Name</label>
+          <input
+            type="text"
+            id="lastName"
+            formControlName="lastName"
+            class="form-control">
+          <span *ngIf="!$any(registrationForm).get('lastName').valid && $any(registrationForm).get('lastName').touched" class="help-block">
+           <small *ngIf="$any(registrationForm).get('lastName').errors.required" class="text-danger">Last name is required!</small>
+            <small *ngIf="$any(registrationForm).get('lastName').errors.pattern" class="text-danger">Please provide a valid last name!</small>
+          </span>
+        </section>
+
+        <section >
+          <label for="email">Email</label>
+          <input
+            type="text"
+            id="email"
+            formControlName="email"
+            class="form-control">
+          <span *ngIf="!$any(registrationForm)?.get('email')?.valid && $any(registrationForm)?.get('email')?.touched" class="help-block">
+           <small *ngIf="$any(registrationForm)?.get('email')?.errors['required']" class="text-danger">Email is required!</small>
+            <small *ngIf="$any(registrationForm)?.get('email')?.errors['pattern']" class="text-danger">Please provide a valid email!</small>
+          </span>
+        </section>
+
+        <section >
+          <label for="userName">Username</label>
+          <input
+            type="text"
+            id="userName"
+            formControlName="userName"
+            class="form-control">
+          <span *ngIf="!$any(registrationForm)?.get('userName')?.valid && $any(registrationForm)?.get('userName')?.touched" class="help-block">
+            <small *ngIf="$any(registrationForm)?.get('userName')?.errors['required']" class="text-danger">Username is required!</small>
+            <small *ngIf="$any(registrationForm)?.get('userName')?.errors['pattern']" class="text-danger">The username must contain small letter, symbols and digits!</small>
+          </span>
+        </section>
+
+        <section >
+          <label for="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            formControlName="password"
+            class="form-control">
+          <span *ngIf="!$any(registrationForm)?.get('password')?.valid && $any(registrationForm)?.get('password')?.touched" class="help-block">
+           <small *ngIf="$any(registrationForm)?.get('password')?.errors['required']" class="text-danger">Password is required!</small>
+            <small *ngIf="$any(registrationForm)?.get('password')?.errors['pattern']" class="text-danger">The password must contain big and small letters, symbols and digits !</small>
+          </span>
+        </section>
+
+        <section >
+          <label for="confirmPassword">Confirm Password</label>
+          <input
+            type="password"
+            id="confirmPassword"
+            formControlName="confirmPassword"
+            class="form-control">
+          <span *ngIf="!$any(registrationForm)?.get('confirmPassword')?.valid  && $any(registrationForm)?.get('confirmPassword')?.touched" class="help-block">
+          <small class="text-danger">The passwords must match!</small> </span>
+        </section>
+
+        <br>
+        <button class="submit-button" mat-flat-button
+                [disabled]="!$any(registrationForm)?.valid"
+                (click)="onSubmit()">Sign up</button>
+      </form>
+     </fieldset>
+   </main>

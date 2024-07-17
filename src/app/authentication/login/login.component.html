@@ -1,0 +1,49 @@
+<main >
+  <fieldset >
+
+          <form [formGroup]="loginForm" >
+            <h2 >Login</h2>
+
+            <section>
+              <label  for="username">Username:</label><br>
+              <input
+                type="text"
+                name="username"
+                id="username"
+                class="form-control"
+                formControlName="username">
+              <span *ngIf="!$any(loginForm)?.get('username')?.valid && $any(loginForm)?.get('username')?.touched">
+                    <small *ngIf="$any(loginForm)?.get('username')?.errors['required']"
+                           class="text-danger">Username is required!</small>
+              </span>
+            </section>
+
+            <section>
+              <label for="password">Password:</label><br>
+              <input
+                type="password"
+                name="password"
+                id="password"
+                class="form-control"
+                formControlName="passWord">
+              <span *ngIf="!$any(loginForm)?.get('passWord')?.valid && $any(loginForm)?.get('passWord')?.touched">
+                 <small *ngIf="$any(loginForm)?.get('passWord')?.errors['required']"
+                        class="text-danger">Password is required!</small>
+              </span>
+            </section>
+
+            <section class="text-info">
+              <button mat-flat-button
+                      class="submit-button"
+                      [disabled]="!loginForm.valid"
+                      (click)="loginGo()">Login</button>
+            <p class="text-right">
+              <a href="#">Register here</a>
+            </p>
+              </section>
+
+          </form>
+
+  </fieldset>
+</main>
+

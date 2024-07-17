@@ -1,0 +1,81 @@
+<h1 mat-dialog-title>Write your plan :)</h1>
+<form [formGroup]="form">
+  <div mat-dialog-content>
+   <div>
+     <h3>Start Time</h3>
+
+     <mat-form-field>
+       <mat-label>Hour</mat-label>
+       <mat-select formControlName="startHour">
+         <mat-label>Search</mat-label>
+         <input matInput
+                (keyup)="onKey($event, 'startHour')"
+                class="search-input">
+         <mat-option *ngFor="let item of selectedStartHours" [value]="item">{{item}}</mat-option>
+       </mat-select>
+       <mat-error *ngIf="$any(form)?.get('startHour').hasError('required')">Please select an hour!</mat-error>
+       <mat-error *ngIf="$any(form)?.get('startHour').hasError('inCorrectTime')">EndTime must be after start!</mat-error>
+     </mat-form-field>
+
+     <mat-form-field class="field">
+       <mat-label>Minutes</mat-label>
+       <mat-select formControlName="startMinutes">
+         <mat-label>Search</mat-label>
+         <input matInput
+                (keyup)="onKey($event.target, 'startMinutes')"
+                class="search-input">
+         <mat-option *ngFor="let item of selectedStartMinutes" [value]="item">{{item}}</mat-option>
+       </mat-select>
+       <mat-error *ngIf="$any(form)?.get('startMinutes').hasError('required')">Please select an hour!</mat-error>
+       <mat-error *ngIf="$any(form)?.get('startMinutes').hasError('inCorrectTime')">EndTime must be after start!</mat-error>
+     </mat-form-field>
+   </div>
+
+  <div>
+    <h3>End Time</h3>
+
+    <mat-form-field>
+      <mat-label>Hour</mat-label>
+      <mat-select formControlName="endHour">
+        <mat-label>Search</mat-label>
+        <input matInput
+               (keyup)="onKey($event.target, 'endHour')"
+               class="search-input">
+        <mat-option *ngFor="let item of selectedEndHours" [value]="item">{{item}}</mat-option>
+      </mat-select>
+      <mat-error *ngIf="$any(form)?.get('endHour').hasError('required')">Please select an hour!</mat-error>
+      <mat-error *ngIf="$any(form)?.get('endHour').hasError('inCorrectTime')">EndTime must be after start!</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="field">
+      <mat-label>Minutes</mat-label>
+      <mat-select formControlName="endMinutes">
+        <mat-label>Search</mat-label>
+        <input matInput
+               (keyup)="onKey($event.target, 'endMinutes')"
+               class="search-input">
+        <mat-option *ngFor="let item of selectedEndMinutes" [value]="item">{{item}}</mat-option>
+      </mat-select>
+      <mat-error *ngIf="$any(form)?.get('endMinutes').hasError('required')">Please select an hour!</mat-error>
+      <mat-error *ngIf="$any(form)?.get('endMinutes').hasError('inCorrectTime')">EndTime must be after start!</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Appearance</mat-label>
+      <mat-select formControlName="appearance">
+        <mat-option *ngFor="let item of itemsAppearance" [value]="item">{{item}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+    <div>
+      <p>Todo:</p>
+      <textarea
+        formControlName="plan"></textarea>
+    </div>
+  </div>
+</form>
+<div mat-dialog-actions class="wrapper-btn">
+  <button mat-button (click)="onCloseDialog()">No Thanks</button>
+  <button mat-button (click)="save(form)" [disabled]="!form.valid">Save</button>
+</div>
