@@ -4,7 +4,6 @@ import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {RouterOutlet} from "@angular/router";
 import {AppRoutingModule} from "./app-routing.module";
-import {StoreService} from "./shared/store.service";
 import {AuthGuard} from "./shared/auth.guard";
 import {ActionReducer, ActionReducerMap, MetaReducer, StoreModule} from "@ngrx/store";
 import {EffectsModule} from "@ngrx/effects";
@@ -51,7 +50,6 @@ export const reducers: ActionReducerMap<any, any> = {
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() })
   ],
   providers: [
-    StoreService,
     AuthGuard
   ],
   bootstrap: [AppComponent]
