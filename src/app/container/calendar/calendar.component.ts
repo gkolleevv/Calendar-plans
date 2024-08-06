@@ -4,7 +4,7 @@ import {DialogComponent} from "../../shared/dialog/dialog.component";
 import {weekDays} from "../../shared/const";
 import {DateModel} from "../../shared/calendar.model";
 import {Subject, takeUntil} from "rxjs";
-import {MatCalendar} from "@angular/material/datepicker";
+import {MatCalendar, MatCalendarCellCssClasses} from "@angular/material/datepicker";
 import {CalendarFacade} from "../../shared/store/calendar.facade";
 import {Store} from "@ngrx/store";
 import {AddCalendarElement, AddCurrentDate} from "../../shared/store/calendar.actions";
@@ -18,7 +18,7 @@ import {ToastrService} from "ngx-toastr";
   encapsulation: ViewEncapsulation.None
 })
 export class CalendarComponent implements OnInit, OnDestroy{
-  @ViewChild(MatCalendar, {static: false}) calendar: MatCalendar<Date>;
+  @ViewChild(MatCalendar) calendar: MatCalendar<Date>;
   public selected: Date | null = null;
   private selectedDates: any = [];
   private destroy$ = new Subject();
@@ -40,24 +40,25 @@ export class CalendarComponent implements OnInit, OnDestroy{
       });
       this.changeColor();
       this.calendar.updateTodaysDate();
-    })
+    });
   }
 
   changeColor() {
-    this.calendar.dateClass = (d: Date) => {
+      this.calendar.dateClass = (d: Date): MatCalendarCellCssClasses => {
         return this.selectedDates.some(
           (item: Date) =>
             item.getFullYear() === d.getFullYear() &&
             item.getDate() === d.getDate() &&
             item.getMonth() === d.getMonth()
         ) ? "highlight-date" : '';
-    }
+      }
   }
 
   onDateClick($event: any) {
    const arrDate: string[] = $event.toString().split(' ');
    const dataStore = this.facade.getCalendarState().calendarData;
    const date = new Date($event).toLocaleDateString();
+   this.changeColor();
    const obj: DateModel = {
      date: new Date($event),
      weekDay: weekDays[arrDate[0]]
