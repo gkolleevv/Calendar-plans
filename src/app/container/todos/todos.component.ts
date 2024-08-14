@@ -7,6 +7,7 @@ import {Store} from "@ngrx/store";
 import {CalendarFacade} from "../../shared/store/calendar.facade";
 import {AddCalendarElement} from "../../shared/store/calendar.actions";
 import {CalendarState} from "../../shared/store/calendar.state";
+import {StoreService} from "../../shared/store.service";
 
 @Component({
   selector: 'app-todos',
@@ -20,6 +21,7 @@ export class TodosComponent implements OnInit, OnDestroy {
   constructor(
     private store: Store<CalendarState>,
     private facade: CalendarFacade,
+    private service: StoreService,
     private dialog: MatDialog
   ) {}
 
@@ -64,5 +66,11 @@ export class TodosComponent implements OnInit, OnDestroy {
 
   public trackById(index: number, item: TodoModel): number {
     return item.id as number;
+  }
+
+  startDrag(event: any) {
+    if (event) {
+      this.service.dragEvent.next(event.source.data);
+    }
   }
 }

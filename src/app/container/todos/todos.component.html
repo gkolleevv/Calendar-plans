@@ -1,8 +1,12 @@
-<div class="container">
+<div class="container" cdkDropList>
   <h2 *ngIf="!todos && !date">Click on a date from calendar and create your plan for the day :)</h2>
   <h2 *ngIf="todos && date">{{date.date.toLocaleDateString()}} - {{date.weekDay}}</h2>
   <div *ngFor="let todo of todos; trackBy: trackById">
-    <app-todo class="todo" [todo]="todo"></app-todo>
+    <app-todo class="todo"
+              [todo]="todo"
+              cdkDrag
+              (cdkDragStarted)="startDrag($event)"
+              [cdkDragData]="todo"></app-todo>
   </div>
   <h2 *ngIf="(!todos && date)">No plans for this day :)</h2>
   <button mat-flat-button

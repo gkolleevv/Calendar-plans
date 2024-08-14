@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {Observable, of} from "rxjs";
+import {BehaviorSubject, Observable, of} from "rxjs";
 import {CalendarModel, DateModel, TodoModel} from "./calendar.model";
 import {CalendarFacade} from "./store/calendar.facade";
 
@@ -7,6 +7,7 @@ import {CalendarFacade} from "./store/calendar.facade";
   providedIn: 'root'
 })
 export class StoreService {
+  dragEvent: BehaviorSubject<TodoModel | null> = new BehaviorSubject<TodoModel | null>(null);
   constructor(
     private facade: CalendarFacade
   ) {}

@@ -1,15 +1,16 @@
-import {Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from "@angular/core";
+import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from "@angular/core";
 import {MatDialog} from "@angular/material/dialog";
 import {DialogComponent} from "../../shared/dialog/dialog.component";
 import {weekDays} from "../../shared/const";
 import {DateModel} from "../../shared/calendar.model";
-import {Subject, takeUntil} from "rxjs";
+import {fromEvent, Subject, takeUntil, withLatestFrom} from "rxjs";
 import {MatCalendar, MatCalendarCellCssClasses} from "@angular/material/datepicker";
 import {CalendarFacade} from "../../shared/store/calendar.facade";
 import {Store} from "@ngrx/store";
 import {AddCalendarElement, AddCurrentDate} from "../../shared/store/calendar.actions";
 import {CalendarState} from "../../shared/store/calendar.state";
 import {ToastrService} from "ngx-toastr";
+import {StoreService} from "../../shared/store.service";
 
 @Component({
   selector: 'app-calendar',
@@ -17,14 +18,17 @@ import {ToastrService} from "ngx-toastr";
   styleUrls: ['./calendar.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class CalendarComponent implements OnInit, OnDestroy{
+export class CalendarComponent implements OnInit, OnDestroy, AfterViewInit{
   @ViewChild(MatCalendar) calendar: MatCalendar<Date>;
+  private selectedYear: string | null = null;
   public selected: Date | null = null;
   private selectedDates: any = [];
   private destroy$ = new Subject();
   constructor(
+    private ref: ElementRef,
     private dialog: MatDialog,
     private toaster: ToastrService,
+    private service: StoreService,
     private store: Store<CalendarState>,
     private facade: CalendarFacade) {
   }
@@ -80,5 +84,28 @@ export class CalendarComponent implements OnInit, OnDestroy{
 
   ngOnDestroy(): void {
     this.destroy$.next(null);
+  }
+
+  ngAfterViewInit(): void {
+    fromEvent(this.ref.nativeElement, 'mouseup').pipe(takeUntil(this.destroy$), withLatestFrom(this.service.dragEvent)).subscribe(([x, draggedElement]) => {
+      if ((x as any).target?.className?.includes('mat-calendar-body-cell') && draggedElement) {
+        let obj: DateModel;
+        let date: Date;
+        if (!this.selectedYear) {
+          this.selectedYear = new Date(this.facade.getCalendarState().currentDate.date).getFullYear().toString();
+        }
+        date = new Date (`${(x as any).srcElement?.innerText}/${this.calendar.monthView._monthLabel}/${this.selectedYear}`);
+        const arrDate: string[] = date.toString().split(' ');
+        obj = {
+          date: date,
+          weekDay: weekDays[arrDate[0]]
+        };
+        this.store.dispatch(new AddCalendarElement(draggedElement, obj));
+        this.service.dragEvent.next(null);
+      }
+      if (this.calendar.yearView?._yearLabel) {
+        this.selectedYear = this.calendar.yearView._yearLabel;
+      }
+    });
   }
 }
